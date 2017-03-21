@@ -1,3 +1,28 @@
 <!--index.vtl-->
+<h1>Add a CD</h1>
+<form action="/cd" method="post">
+  <label for="artist">Artist</label>
+  <input id="artist" name="artist" type="text">
+  <label for="album">Album</label>
+  <input id="album" name="album" type="text">
+  <label for="genre">Genre</label>
+  <input id="genre" name="genre" type="text">
+  <label for="release">Release Year</label>
+  <input id="release" name="release" type="number">
 
+  <button type="submit" class="btn">Add a CD</button>
+</form>
+
+#if ($cds)
+  <ul>
+    #foreach ($cd in $cds)
+      <li>$cd.getAlbum() by $cd.getArtist()
+        <ul>
+          <li>Genre: $cd.getGenre()</li>
+          <li>Release Year: $cd.getRelease()</li>
+        </ul>
+      </li>
+    #end
+  </ul>
+#end
 <!--index.vtl-->
