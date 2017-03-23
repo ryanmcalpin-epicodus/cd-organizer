@@ -37,5 +37,57 @@ public class App {
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
+    get("/artist/:id/cDs/new", (request, response) -> {
+      Map<String, Object> model = new HashMap<String, Object>();
+      Artist artist = Artist.find(Integer.parseInt(request.params(":id")));
+      model.put("artist", artist);
+      model.put("template", "templates/artist-cD-form.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    post("/cDs", (request, response) -> {
+      Map<String, Object> model = new HashMap<String, Object>();
+      Artist artist = Artist.find(Integer.parseInt(request.queryParams("artistId")));
+
+      String albumName = request.queryParams("albumName");
+      String genre = request.queryParams("genre");
+      int year = Integer.parseInt(request.queryParams("year"));
+      CD newCD = new CD(artist.getName(), albumName, genre, year);
+
+      artist.addCD(newCD);
+
+      model.put("artist", artist);
+      model.put("template", "templates/artist-cD-success.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    get("/artists/new", (request, response) -> {
+      Map<String, Object> model = new HashMap<String, Object>();
+      model.put("template", "templates/artist-form.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    post("/artists", (request, response) -> {
+      Map<String, Object> model = new HashMap<String, Object>();
+      String name = request.queryParams("name");
+      Artist newArtist = new Artist(name);
+      model.put("template", "templates/artist-success.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    get("/artists", (request, response) -> {
+      Map<String, Object> model = new HashMap<String, Object>();
+      model.put("artists", Artist.all());
+      model.put("template", "templates/artists.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    get("/artists/:id", (request, response) -> {
+      Map<String, Object> model = new HashMap<String, Object>();
+      Artist artist = Artist.find(Integer.parseInt(request.params(":id")));
+      model.put("artist", artist);
+      model.put("template", "templates/artist.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
   }
 }
